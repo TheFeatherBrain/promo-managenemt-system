@@ -5,22 +5,50 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.promo.management.system.promomanagement.config.properties.MultiTenantDataSourceProperties;
+import jakarta.persistence.EntityManagerFactory;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
+@EnableJpaRepositories(
+    basePackages = "com.promo.management.system.promomanagement.model"
+)
 public class DatasourceConfig {
 
     @Bean
     public DataSource dataSource(MultiTenantDataSourceProperties dataSourceProperties) {
         Map<Object, Object> targetDataSources = new HashMap<>();
 
-        dataSourceProperties.getTenantDatasourceProperties().forEach((id, properties) ->
+        dataSourceProperties.getDataSources().forEach((id, properties) ->
             targetDataSources.put(id, properties.initializeDataSourceBuilder().build()));
 
         MultiTenantDataSource multiTenantDataSourceConfig = new MultiTenantDataSource();
         multiTenantDataSourceConfig.setTargetDataSources(targetDataSources);
         return multiTenantDataSourceConfig;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, EntityManagerFactoryBuilder builder,
+                                                                       HibernateProperties hibernateProperties, JpaProperties jpaProperties) {
+        return builder
+            .dataSource(dataSource)
+            .packages("com.promo.management.system.promomanagement.model")
+            .properties(hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings()))
+            .build();
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(
+        EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
     }
 
 }
