@@ -1,0 +1,6 @@
+com\promo\management\system\promomanagement\config\datasource\DatasourceConfig.class
+com\promo\management\system\promomanagement\config\datasource\MultiTenantDataSource.class
+com\promo\management\system\promomanagement\PromoManagementApplication.class
+com\promo\management\system\promomanagement\model\enumeration\TenantEnum.class
+com\promo\management\system\promomanagement\config\properties\MultiTenantDataSourceProperties.class
+com\promo\management\system\promomanagement\config\datasource\FlywayConfig.class

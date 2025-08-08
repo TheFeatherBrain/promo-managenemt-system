@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:17.5
+    container_name: promo-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.2
+    container_name: promo-keycloak
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak/:/opt/keycloak/data/import
+
+volumes:
+  pgdata:
+  keycloak-data:

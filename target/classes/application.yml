@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: promo-management
+  datasources:
+    greece:
+      url: jdbc:postgresql://localhost:5432/promo_greece
+      username: postgres
+      password: postgres
+      driver-class-name: org.postgresql.Driver
+    japan:
+      url: jdbc:postgresql://localhost:5432/promo_japan
+      username: postgres
+      password: postgres
+      driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: false
