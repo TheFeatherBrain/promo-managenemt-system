@@ -1,7 +1,8 @@
-package com.promo.management.system.promomanagement.web;
+package com.promo.management.system.promomanagement.web.controller;
 
-import com.promo.management.system.promomanagement.PromoCodeService;
+import com.promo.management.system.promomanagement.service.PromoCodeService;
 import com.promo.management.system.promomanagement.model.dto.CreatePromoCodeRequestDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class PromoCodeController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createPromoCode(@RequestBody CreatePromoCodeRequestDto requestDto) {
+    public void createPromoCode(@RequestBody @Valid CreatePromoCodeRequestDto requestDto) {
         promoCodeService.createPromoCode(requestDto);
     }
 

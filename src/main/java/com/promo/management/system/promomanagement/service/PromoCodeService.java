@@ -1,4 +1,4 @@
-package com.promo.management.system.promomanagement;
+package com.promo.management.system.promomanagement.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -7,7 +7,7 @@ import com.promo.management.system.promomanagement.model.dto.CreatePromoCodeRequ
 import com.promo.management.system.promomanagement.model.entity.PromoCode;
 import com.promo.management.system.promomanagement.model.enumeration.PromoCodeStatus;
 import com.promo.management.system.promomanagement.model.enumeration.PromoManagementSystemError;
-import com.promo.management.system.promomanagement.model.exception.PromoSystemRuntimeException;
+import com.promo.management.system.promomanagement.model.exception.PromoSystemRuntimeValidationException;
 import com.promo.management.system.promomanagement.repository.PromoCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ public class PromoCodeService {
 
     public void createPromoCode(CreatePromoCodeRequestDto requestDto) {
         if (promoCodeRepository.existsByCode(requestDto.getCode())) {
-            throw new PromoSystemRuntimeException(PromoManagementSystemError.PROMO_CODE_ALREADY_EXISTS);
+            throw new PromoSystemRuntimeValidationException(PromoManagementSystemError.PROMO_CODE_ALREADY_EXISTS);
         }
         promoCodeRepository.save(toPromoCode(requestDto));
     }
 
     public PromoCode getPromoCodeByCode(String code) {
         return promoCodeRepository.findByCode(code).orElseThrow(
-            () -> new PromoSystemRuntimeException(PromoManagementSystemError.PROMO_CODE_NOT_FOUND));
+            () -> new PromoSystemRuntimeValidationException(PromoManagementSystemError.PROMO_CODE_NOT_FOUND));
     }
 
     private static PromoCode toPromoCode(CreatePromoCodeRequestDto requestDto) {
