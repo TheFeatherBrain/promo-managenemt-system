@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.promo.management.system.promomanagement.config.properties.MultiTenantDataSourceProperties;
+import com.promo.management.system.promomanagement.model.enumeration.Tenant;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
@@ -32,6 +33,7 @@ public class DatasourceConfig {
 
         MultiTenantDataSource multiTenantDataSourceConfig = new MultiTenantDataSource();
         multiTenantDataSourceConfig.setTargetDataSources(targetDataSources);
+        multiTenantDataSourceConfig.setDefaultTargetDataSource(targetDataSources.get(Tenant.GREECE));
         return multiTenantDataSourceConfig;
     }
 

@@ -13,11 +13,11 @@ public enum Tenant {
     GREECE("greece"),
     JAPAN("japan");
 
-    private final String tokenClaim;
+    private final String description;
 
-    public static Tenant fromTokenClaim(String tokenClaim) {
+    public static Tenant fromDescription(String tokenClaim) {
         return Stream.of(Tenant.values())
-            .filter(t -> t.tokenClaim.equals(tokenClaim))
+            .filter(t -> t.description.equals(tokenClaim))
             .findFirst()
             .orElseThrow(() -> new PromoSystemRuntimeException(PromoManagementSystemError.UNEXPECTED_TENANT));
     }
