@@ -8,7 +8,7 @@ public class MultiTenantDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        return UserSecurityUtils.getTenantFromClaim();
+        return UserSecurityUtils.getTenant();
     }
 
 }

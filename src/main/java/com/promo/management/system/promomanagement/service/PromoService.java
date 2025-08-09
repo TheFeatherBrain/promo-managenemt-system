@@ -2,6 +2,7 @@ package com.promo.management.system.promomanagement.service;
 
 import static com.promo.management.system.promomanagement.model.enumeration.PromoManagementSystemError.PROMO_CODE_ALREADY_EXISTS;
 import static com.promo.management.system.promomanagement.model.enumeration.PromoManagementSystemError.PROMO_CODE_NOT_FOUND;
+import static com.promo.management.system.promomanagement.utils.UserSecurityUtils.getLoggedInUser;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static org.springframework.util.StringUtils.hasText;
@@ -38,6 +39,10 @@ public class PromoService {
         PromoCode promoCode = promoCodeRepository.findById(id)
             .orElseThrow(() -> new PromoSystemRuntimeValidationException(PROMO_CODE_NOT_FOUND));
 
+        if (hasText(requestDto.getCode()) && promoCodeRepository.existsByCode(requestDto.getCode())) {
+            throw new PromoSystemRuntimeValidationException(PROMO_CODE_ALREADY_EXISTS);
+        }
+
         promoCodeRepository.save(toPromoCode(requestDto, promoCode));
     }
 
@@ -55,7 +60,7 @@ public class PromoService {
             .usageLimit(requestDto.getUsageLimit())
             .status(ofNullable(requestDto.getStatus()).orElse(PromoCodeStatus.ACTIVE))
             .createdAt(LocalDateTime.now())
-            .createdBy("TEST")
+            .createdBy(getLoggedInUser())
             .build();
     }
 
@@ -70,7 +75,7 @@ public class PromoService {
             .usageLimit(ofNullable(requestDto.getUsageLimit()).orElseGet(promoCode::getUsageLimit))
             .status(ofNullable(requestDto.getStatus()).orElseGet(promoCode::getStatus))
             .updatedAt(LocalDateTime.now())
-            .updatedBy("TEST")
+            .updatedBy(getLoggedInUser())
             .build();
     }
 

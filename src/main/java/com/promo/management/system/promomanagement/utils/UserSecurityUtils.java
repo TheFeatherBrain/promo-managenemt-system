@@ -14,13 +14,17 @@ public class UserSecurityUtils {
 
     private final String TENANT = "tenant";
 
-    public static Tenant getTenantFromClaim() {
+    public static Tenant getTenant() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = authentication instanceof JwtAuthenticationToken ? ((JwtAuthenticationToken) authentication).getToken() : null;
         return Optional.ofNullable(jwt)
             .map(token -> token.getClaimAsString(TENANT))
             .map(Tenant::fromDescription)
             .orElse(null);
+    }
+
+    public static String getLoggedInUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 }
