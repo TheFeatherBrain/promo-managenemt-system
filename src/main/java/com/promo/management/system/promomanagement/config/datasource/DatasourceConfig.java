@@ -19,7 +19,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = "com.promo.management.system.promomanagement.model"
+    basePackages = "com.promo.management.system.promomanagement.repository"
 )
 public class DatasourceConfig {
 
@@ -40,7 +40,7 @@ public class DatasourceConfig {
                                                                        HibernateProperties hibernateProperties, JpaProperties jpaProperties) {
         return builder
             .dataSource(dataSource)
-            .packages("com.promo.management.system.promomanagement.model")
+            .packages("com.promo.management.system.promomanagement.model.entity")
             .properties(hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings()))
             .build();
     }

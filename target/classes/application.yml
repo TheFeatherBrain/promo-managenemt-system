@@ -16,3 +16,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+server:
+  port: 9090

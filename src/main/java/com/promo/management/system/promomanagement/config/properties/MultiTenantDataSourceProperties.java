@@ -9,9 +9,6 @@ import lombok.Setter;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * Multi tenant datasource properties.
- */
 @Setter
 @Getter
 @ConfigurationProperties("spring.multi-tenant")
