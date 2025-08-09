@@ -46,9 +46,13 @@ public class PromoService {
         promoCodeRepository.save(toPromoCode(requestDto, promoCode));
     }
 
-    public PromoCode getPromoCodeByCode(String code) {
-        return promoCodeRepository.findByCode(code).orElseThrow(
-            () -> new PromoSystemRuntimeValidationException(PROMO_CODE_NOT_FOUND));
+    @Transactional
+    public void deletePromo(UUID id) {
+        if (!promoCodeRepository.existsById(id)) {
+            throw new PromoSystemRuntimeValidationException(PROMO_CODE_NOT_FOUND);
+        }
+
+        promoCodeRepository.deleteById(id);
     }
 
     private static PromoCode toPromoCode(CreatePromoRequestDto requestDto) {
