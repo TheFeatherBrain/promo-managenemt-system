@@ -2,14 +2,14 @@ package com.promo.management.system.promomanagement.web.validation;
 
 import static java.util.Objects.nonNull;
 
-import com.promo.management.system.promomanagement.model.dto.CreatePromoCodeRequestDto;
+import com.promo.management.system.promomanagement.model.dto.CreatePromoRequestDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class CreatePromoRequestConstraintValidator implements ConstraintValidator<CreatePromoRequestConstraint, CreatePromoCodeRequestDto> {
+public class CreatePromoRequestConstraintValidator implements ConstraintValidator<CreatePromoRequestConstraint, CreatePromoRequestDto> {
 
     @Override
-    public boolean isValid(CreatePromoCodeRequestDto request, ConstraintValidatorContext context) {
+    public boolean isValid(CreatePromoRequestDto request, ConstraintValidatorContext context) {
         return nonNull(request) && (nonNull(request.getDiscountValue()) || nonNull(request.getDiscountPercentage()));
     }
 

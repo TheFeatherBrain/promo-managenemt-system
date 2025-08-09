@@ -1,6 +1,8 @@
 package com.promo.management.system.promomanagement.config.security;
 
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,6 +22,12 @@ public class WebSecurityConfig {
         "/actuator/**"
     };
 
+    private static final String[] PATTERN_ADMIN = new String[] {
+        "/admin/**"
+    };
+
+    private static final String ADMIN_AUTHORITY = "ADMIN";
+
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity httpSecurity,
                                            final JwtDecoder jwtDecoder,
@@ -30,6 +38,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authorize ->
                 authorize
                     .requestMatchers(PATTERN_EXCLUDE).permitAll()
+                    .requestMatchers(PATTERN_ADMIN).access(hasAuthority(ADMIN_AUTHORITY))
                     .anyRequest().authenticated())
             .oauth2ResourceServer(configure -> configure
                 .jwt(
