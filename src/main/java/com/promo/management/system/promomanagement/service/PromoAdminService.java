@@ -10,8 +10,8 @@ import static org.springframework.util.StringUtils.hasText;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.promo.management.system.promomanagement.model.dto.CreatePromoRequestDto;
-import com.promo.management.system.promomanagement.model.dto.UpdatePromoRequestDto;
+import com.promo.management.system.promomanagement.web.model.dto.request.CreatePromoRequestDto;
+import com.promo.management.system.promomanagement.web.model.dto.request.UpdatePromoRequestDto;
 import com.promo.management.system.promomanagement.model.entity.PromoCode;
 import com.promo.management.system.promomanagement.model.enumeration.PromoCodeStatus;
 import com.promo.management.system.promomanagement.model.exception.PromoSystemRuntimeValidationException;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PromoService {
+public class PromoAdminService {
 
     private final PromoCodeRepository promoCodeRepository;
 

@@ -2,7 +2,7 @@ package com.promo.management.system.promomanagement.web.validation;
 
 import static java.util.Objects.nonNull;
 
-import com.promo.management.system.promomanagement.model.dto.CreatePromoRequestDto;
+import com.promo.management.system.promomanagement.web.model.dto.request.CreatePromoRequestDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

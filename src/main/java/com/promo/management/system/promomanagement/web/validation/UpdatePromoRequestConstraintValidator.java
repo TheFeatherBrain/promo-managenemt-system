@@ -3,7 +3,7 @@ package com.promo.management.system.promomanagement.web.validation;
 import static java.util.Objects.nonNull;
 import static org.springframework.util.StringUtils.hasText;
 
-import com.promo.management.system.promomanagement.model.dto.UpdatePromoRequestDto;
+import com.promo.management.system.promomanagement.web.model.dto.request.UpdatePromoRequestDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

@@ -2,9 +2,9 @@ package com.promo.management.system.promomanagement.web.controller;
 
 import java.util.UUID;
 
-import com.promo.management.system.promomanagement.model.dto.CreatePromoRequestDto;
-import com.promo.management.system.promomanagement.model.dto.UpdatePromoRequestDto;
-import com.promo.management.system.promomanagement.service.PromoService;
+import com.promo.management.system.promomanagement.web.model.dto.request.CreatePromoRequestDto;
+import com.promo.management.system.promomanagement.web.model.dto.request.UpdatePromoRequestDto;
+import com.promo.management.system.promomanagement.service.PromoAdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,24 +22,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PromoAdminController {
 
-    private final PromoService promoService;
+    private final PromoAdminService promoAdminService;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public void createPromo(@RequestBody @Valid CreatePromoRequestDto requestDto) {
-        promoService.createPromo(requestDto);
+        promoAdminService.createPromo(requestDto);
     }
 
     @PutMapping(value = "{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void updatePromo(@PathVariable UUID id, @RequestBody @Valid UpdatePromoRequestDto requestDto) {
-        promoService.updatePromo(requestDto, id);
+        promoAdminService.updatePromo(requestDto, id);
     }
 
     @DeleteMapping(value = "{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void deletePromo(@PathVariable UUID id) {
-        promoService.deletePromo(id);
+        promoAdminService.deletePromo(id);
     }
 
 }

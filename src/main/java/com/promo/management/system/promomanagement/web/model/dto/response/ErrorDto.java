@@ -1,4 +1,4 @@
-package com.promo.management.system.promomanagement.model.dto;
+package com.promo.management.system.promomanagement.web.model.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

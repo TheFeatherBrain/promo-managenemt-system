@@ -21,6 +21,8 @@ public class TenantSchemaResolver implements CurrentTenantIdentifierResolver<Str
 
     private final MultiTenantProperties properties;
 
+    private static final String PUBLIC_SCHEMA = "public";
+
     @Override
     public String resolveCurrentTenantIdentifier() {
         Tenant tenant = UserSecurityUtils.getTenant();
@@ -31,7 +33,7 @@ public class TenantSchemaResolver implements CurrentTenantIdentifierResolver<Str
                 .map(MultiTenantProperties.TenantInfo::getSchema)
                 .findFirst()
                 .orElseThrow(() -> new PromoSystemRuntimeException(UNEXPECTED_TENANT))
-            : "public";
+            : PUBLIC_SCHEMA;
     }
 
     @Override

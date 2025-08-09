@@ -2,15 +2,13 @@ package com.promo.management.system.promomanagement.web;
 
 import static com.promo.management.system.promomanagement.model.enumeration.PromoManagementSystemError.SERVER_ERROR;
 
-import java.util.Arrays;
 import java.util.Optional;
 
-import com.promo.management.system.promomanagement.model.dto.ErrorDto;
+import com.promo.management.system.promomanagement.web.model.dto.response.ErrorDto;
 import com.promo.management.system.promomanagement.model.exception.PromoSystemRuntimeException;
 import com.promo.management.system.promomanagement.model.exception.PromoSystemRuntimeValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
