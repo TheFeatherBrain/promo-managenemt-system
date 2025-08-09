@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "promo_code", schema = "promo")
+@Table(name = "promo_code")
 public class PromoCode {
 
     @Id

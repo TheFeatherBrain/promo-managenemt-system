@@ -1,11 +1,7 @@
 package com.promo.management.system.promomanagement.config.datasource;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.promo.management.system.promomanagement.config.properties.MultiTenantDataSourceProperties;
-import com.promo.management.system.promomanagement.model.enumeration.Tenant;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
@@ -23,19 +19,6 @@ import org.springframework.transaction.PlatformTransactionManager;
     basePackages = "com.promo.management.system.promomanagement.repository"
 )
 public class DatasourceConfig {
-
-    @Bean
-    public DataSource dataSource(MultiTenantDataSourceProperties dataSourceProperties) {
-        Map<Object, Object> targetDataSources = new HashMap<>();
-
-        dataSourceProperties.getDataSources().forEach((id, properties) ->
-            targetDataSources.put(id, properties.initializeDataSourceBuilder().build()));
-
-        MultiTenantDataSource multiTenantDataSourceConfig = new MultiTenantDataSource();
-        multiTenantDataSourceConfig.setTargetDataSources(targetDataSources);
-        multiTenantDataSourceConfig.setDefaultTargetDataSource(targetDataSources.get(Tenant.GREECE));
-        return multiTenantDataSourceConfig;
-    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, EntityManagerFactoryBuilder builder,

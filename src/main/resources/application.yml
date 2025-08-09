@@ -6,21 +6,22 @@ spring:
           issuer-uri: http://localhost:8081/realms/promo
   application:
     name: promo-management
-  multi-tenant:
-    dataSources:
-      greece:
-        url: jdbc:postgresql://localhost:5432/promo_greece
-        username: postgres
-        password: postgres
-        driver-class-name: org.postgresql.Driver
-      japan:
-        url: jdbc:postgresql://localhost:5432/promo_japan
-        username: postgres
-        password: postgres
-        driver-class-name: org.postgresql.Driver
+  datasource:
+    url: jdbc:postgresql://localhost:5432/promo
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: none
+
+pms:
+  multi-tenant:
+    tenants:
+      - name: greece
+        schema: greek
+      - name: japan
+        schema: japanese
 
 server:
   port: 9090
