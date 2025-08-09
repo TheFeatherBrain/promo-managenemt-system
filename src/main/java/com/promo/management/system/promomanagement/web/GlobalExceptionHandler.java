@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,11 +55,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ErrorDto.builder().code(code).message(message).build(), status);
     }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<ErrorDto> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
+        log.atError().log(() -> String.format("AuthorizationDeniedException: %s", ex));
+        return applicationErrorResponseBuilder(HttpStatus.FORBIDDEN.toString(), ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorDto> handleException(Exception ex) {
         log.atError().log(() -> String.format("Unexpected error: %s", ex));
-
         return applicationErrorResponseBuilder(SERVER_ERROR.getCode(), SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

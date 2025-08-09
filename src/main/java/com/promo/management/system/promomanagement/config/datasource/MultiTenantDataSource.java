@@ -1,6 +1,6 @@
 package com.promo.management.system.promomanagement.config.datasource;
 
-import static com.promo.management.system.promomanagement.model.enumeration.TenantEnum.GREECE;
+import static com.promo.management.system.promomanagement.model.enumeration.Tenant.GREECE;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

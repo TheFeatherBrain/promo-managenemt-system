@@ -10,7 +10,8 @@ public enum PromoManagementSystemError {
     SERVER_ERROR("PMS-1000", "PMS Server Error"),
     UNEXPECTED_PROMO_CODE_STATUS("PMS-1001", "Unexpected Promo Code Status"),
     PROMO_CODE_NOT_FOUND("PMS-1002", "Promo Code Not Found"),
-    PROMO_CODE_ALREADY_EXISTS("PMS-1003", "Promo Code Already Exists");
+    PROMO_CODE_ALREADY_EXISTS("PMS-1003", "Promo Code Already Exists"),
+    UNEXPECTED_TENANT("PMS-1004", "Unexpected Tenant");
 
     private final String code;
     private final String message;

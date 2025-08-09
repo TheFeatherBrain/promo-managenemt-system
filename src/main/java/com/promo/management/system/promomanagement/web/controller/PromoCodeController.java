@@ -5,6 +5,7 @@ import com.promo.management.system.promomanagement.model.dto.CreatePromoCodeRequ
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class PromoCodeController {
     private final PromoCodeService promoCodeService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(code = HttpStatus.CREATED)
     public void createPromoCode(@RequestBody @Valid CreatePromoCodeRequestDto requestDto) {
         promoCodeService.createPromoCode(requestDto);
