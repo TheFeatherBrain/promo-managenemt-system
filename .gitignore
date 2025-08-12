@@ -37,11 +37,11 @@ out/
 hs_err_pid*
 
 # Node.js and Angular
-promo-system-backend/node_modules/
-promo-system-backend/tmp/
-promo-system-backend/out-tsc/
-promo-system-backend/package-lock.json
-promo-system-backend/.angular/
+promo-system-frontend/node_modules/
+promo-system-frontend/tmp/
+promo-system-frontend/out-tsc/
+promo-system-frontend/package-lock.json
+promo-system-frontend/.angular/
 /.idea/
 
 # OS-specific files
