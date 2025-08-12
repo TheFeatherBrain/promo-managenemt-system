@@ -1,0 +1,160 @@
+{
+  "realm": "promo",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      { "name": "ADMIN", "description": "Full access", "composite": false, "clientRole": false, "containerId": "promo" },
+      { "name": "BUSINESS", "description": "Read-only access", "composite": false, "clientRole": false, "containerId": "promo" },
+      { "name": "USER", "description": "Simple user", "composite": false, "clientRole": false, "containerId": "promo" }
+    ]
+  },
+  "users": [
+    {
+      "username": "georgeadmin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "George",
+      "lastName": "Admin",
+      "email": "georgeadmin@example.com",
+      "credentials": [
+        { "type": "password", "value": "admin", "temporary": false }
+      ],
+      "realmRoles": ["ADMIN"],
+      "attributes": {
+        "tenant": ["greece"]
+      }
+    },
+	{
+      "username": "torakusuadmin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Torakusu",
+      "lastName": "Admin",
+      "email": "torakusujapan@example.com",
+      "credentials": [
+        { "type": "password", "value": "admin", "temporary": false }
+      ],
+      "realmRoles": ["ADMIN"],
+      "attributes": {
+        "tenant": ["japan"]
+      }
+    },
+    {
+      "username": "georgebusiness",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "George",
+      "lastName": "Business",
+      "email": "georgebusiness@example.com",
+      "credentials": [
+        { "type": "password", "value": "business", "temporary": false }
+      ],
+      "realmRoles": ["BUSINESS"],
+      "attributes": {
+        "tenant": ["greece"]
+      }
+    },
+    {
+      "username": "torakusubusiness",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Torakusu",
+      "lastName": "Business",
+      "email": "torakusubusiness@example.com",
+      "credentials": [
+        { "type": "password", "value": "business", "temporary": false }
+      ],
+      "realmRoles": ["BUSINESS"],
+      "attributes": {
+        "tenant": ["japan"]
+      }
+    },
+    {
+      "username": "georgeuser",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "George",
+      "lastName": "User",
+      "email": "georgeuser@example.com",
+      "credentials": [
+        { "type": "password", "value": "user", "temporary": false }
+      ],
+      "realmRoles": ["USER"],
+      "attributes": {
+        "tenant": ["greece"]
+      }
+    },
+    {
+      "username": "torakusuuser",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Torakusu",
+      "lastName": "User",
+      "email": "torakusuuseer@example.com",
+      "credentials": [
+        { "type": "password", "value": "user", "temporary": false }
+      ],
+      "realmRoles": ["USER"],
+      "attributes": {
+        "tenant": ["japan"]
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "promo-client",
+      "enabled": true,
+      "publicClient": true,
+      "redirectUris": ["http://localhost:4200/*"],
+      "webOrigins": ["*"],
+      "directAccessGrantsEnabled": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": ["roles", "tenant"]
+    }
+  ],
+  "protocolMappers": [],
+  "clientScopes": [
+    {
+      "name": "roles",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tenant",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "tenant-attribute",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "tenant",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "tenant",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ]
+}

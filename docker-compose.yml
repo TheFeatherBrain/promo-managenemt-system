@@ -1,0 +1,63 @@
+services:
+  localhost:
+    image: alpine:latest
+    command: sleep infinity
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+      - "5432:5432"
+  db:
+    image: postgres:17.5
+    container_name: promo-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    network_mode: "service:localhost"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.0
+    container_name: promo-keycloak
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://localhost:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+    depends_on:
+      - db
+    network_mode: "service:localhost"
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak/:/opt/keycloak/data/import
+
+  promo-system-backend:
+    container_name: promo-system-backend
+    build:
+      context: ./promo-system-backend
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - keycloak
+    network_mode: "service:localhost"
+
+  promo-system-frontend:
+    container_name: promo-system-frontend
+    build:
+      context: ./promo-system-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - promo-system-backend
+
+volumes:
+  pgdata:
+  keycloak-data:
