@@ -331,23 +331,4 @@ export class PromoComponent implements OnInit {
     }
     return fallback;
   }
-
-  getStatusChipStyle(status: 'ACTIVE' | 'EXPIRED' | 'DISABLED' | null | undefined) {
-    // Material default theme reference hues:
-    const PRIMARY = '#3f51b5'; // indigo 500
-    const ACCENT  = '#e91e63'; // pink 500
-    const WARN    = '#f44336'; // red 500
-    const GREY    = '#9e9e9e';
-
-    switch (status) {
-      case 'ACTIVE':
-        return { backgroundColor: 'rgba(63, 81, 181, 0.12)', color: PRIMARY, border: 'none' };
-      case 'EXPIRED':
-        return { backgroundColor: 'rgba(244, 67, 54, 0.12)',  color: WARN,    border: 'none' };
-      case 'DISABLED':
-        return { backgroundColor: 'rgba(233, 30, 99, 0.12)',  color: ACCENT,  border: 'none' };
-      default:
-        return { backgroundColor: 'rgba(158, 158, 158, 0.12)', color: GREY,    border: 'none' };
-    }
-  }
 }

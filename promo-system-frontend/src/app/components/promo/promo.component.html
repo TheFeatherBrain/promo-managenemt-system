@@ -113,8 +113,11 @@
                     <th mat-header-cell *matHeaderCellDef> Status </th>
                     <td mat-cell *matCellDef="let p">
                         <mat-chip-set aria-label="Promo status">
-                            <mat-chip class="status-chip" [ngStyle]="getStatusChipStyle(p.status)">
-                                {{ p.status }}
+                            <mat-chip class="status-chip"
+                                      [class.status--active]="p.status==='ACTIVE'"
+                                      [class.status--expired]="p.status==='EXPIRED'"
+                                      [class.status--disabled]="p.status==='DISABLED'">
+                                {{ p.status || '—' }}
                             </mat-chip>
                         </mat-chip-set>
                     </td>
