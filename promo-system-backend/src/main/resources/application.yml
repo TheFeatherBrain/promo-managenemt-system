@@ -1,0 +1,27 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/promo
+  application:
+    name: promo-management
+  datasource:
+    url: jdbc:postgresql://localhost:5432/promo
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+pms:
+  multi-tenant:
+    tenants:
+      - name: greece
+        schema: greek
+      - name: japan
+        schema: japanese
+
+server:
+  port: 9090
