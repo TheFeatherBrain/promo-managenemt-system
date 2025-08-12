@@ -1,6 +1,6 @@
 # Promo Code Management System — Multi‑Tenant (Greece & Japan)
 
-A full‑stack demo of a **multi‑tenant Promo Code Management System** with **Java 21 / Spring Boot 3.5+** (backend), **Angular** (frontend), **Keycloak** for Authentication and Authorization (with custom tenant claim), and **PostgreSQL** using **schema‑per‑tenant** isolation. Database migrations are managed by **Flyway**. Everything runs via **Docker Compose**.
+A full‑stack demo of a **multi‑tenant Promo Code Management System** with **Java 21 / Spring Boot 3.5.4** (backend), **Angular 19** (frontend), **Keycloak** for Authentication and Authorization (with custom tenant claim), and **PostgreSQL** using **schema‑per‑tenant** isolation. Database migrations are managed by **Flyway**. Everything runs via **Docker Compose**.
 
 > **Tenants in this demo:** `Greece` and `Japan`\
 > **Default users:** 6 accounts (Admin, Business, User for each tenant).
@@ -53,7 +53,7 @@ After all services are healthy:
 
 ---
 
-## 👥 Tenants & Default Users
+## Tenants & Default Users
 
 This demo comes with two tenants and six users:
 
@@ -74,7 +74,7 @@ This demo comes with two tenants and six users:
 
 ---
 
-## 🔎 Using the App (Demo Flow)
+## Using the App (Demo Flow)
 
 1. Open [**http://localhost:4200**](http://localhost:4200) and log in.
 2. As **ADMIN** (e.g., `georgeadmin` / `admin`), go to **/promo** and create a few promo codes for **Greece**.
@@ -87,3 +87,11 @@ This demo comes with two tenants and six users:
 - Sort by **code** or **expiration date** (ASC/DESC).
 - Results are **pageable** and include **usage count** per code.
 
+---
+
+## Extending to More Tenants
+
+1. Add the new tenant value to the **Keycloak** user attributes.
+2. Update backend enum com.promo.management.system.promomanagement.model.enumeration.Tenant enum with the new tenant.
+3. Add the new value to application.yml at key pms.mutli-tenant.tenants. 
+3. **Flyway** will take care the creation of the new schema and its tables.
