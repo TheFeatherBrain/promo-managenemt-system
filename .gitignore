@@ -1,8 +1,8 @@
 # Maven
 .mvn/
-/log/
-/target
-/logs/
+promo-system-backend/log/
+promo-system-backend/target
+promo-system-backend/logs/
 
 # Compiled class file
 *.class
