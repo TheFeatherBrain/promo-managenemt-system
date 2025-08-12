@@ -13,11 +13,9 @@ export class KeycloakService {
       clientId: environment.keycloak.clientId
     });
 
-    // do not force login here; use check-sso so the app can show the login page
     return this.keycloak
       .init({ onLoad: 'check-sso', checkLoginIframe: false, pkceMethod: "S256" })
       .then((authenticated) => {
-        // Schedule token refresh
         if (authenticated) {
           this.scheduleTokenRefresh();
         }

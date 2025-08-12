@@ -1,12 +1,5 @@
-// src/app/services/auth.interceptor.ts
 import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
-} from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { KeycloakService } from './keycloak.service';
@@ -37,7 +30,6 @@ export class AuthInterceptor implements HttpInterceptor {
           return next.handle(authReq);
         }),
         catchError((err: HttpErrorResponse) => {
-          // If we ever get unauthorized/forbidden, bounce to login
           if (err.status === 401 || err.status === 403) {
             this.kc.login(window.location.href);
           }

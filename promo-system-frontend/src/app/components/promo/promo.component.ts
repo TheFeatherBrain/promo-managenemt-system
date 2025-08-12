@@ -9,9 +9,10 @@ import {ConfirmDialogComponent} from "../shared/confirm-dialog/confirm-dialog.co
 import {Sort} from "@angular/material/sort";
 
 @Component({
-  selector: 'app-promo',
-  templateUrl: './promo.component.html',
-  styleUrls: ['./promo.component.css']
+    selector: 'app-promo',
+    templateUrl: './promo.component.html',
+    styleUrls: ['./promo.component.css'],
+    standalone: false
 })
 export class PromoComponent implements OnInit {
 
@@ -79,7 +80,7 @@ export class PromoComponent implements OnInit {
   onSort(ev: Sort) {
     this.sortActive = (ev.active as any) || '';
     this.sortDirection = (ev.direction as any) || '';
-    this.load(0); // reset to first page when sort changes
+    this.load(0);
   }
 
 

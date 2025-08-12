@@ -10,7 +10,6 @@ export class AuthGuard implements CanActivate {
     if (this.kc.isLoggedIn()) {
       return true;
     }
-    // Not authenticated → go to login page and remember return url
     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
     return false;
   }
