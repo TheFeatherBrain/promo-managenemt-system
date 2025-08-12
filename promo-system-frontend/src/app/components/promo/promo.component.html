@@ -1,0 +1,219 @@
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+    <h1 style="margin:0;">Promo Codes</h1>
+</div>
+
+<!-- Filters -->
+<mat-card style="margin-bottom:16px;">
+    <mat-card-content>
+        <form>
+            <div class="promo-grid">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Code</mat-label>
+                    <input matInput [(ngModel)]="fCode" name="fCode" placeholder="e.g. WELCOME10">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="fStatus" name="fStatus">
+                        <mat-option [value]="">All</mat-option>
+                        <mat-option value="ACTIVE">ACTIVE</mat-option>
+                        <mat-option value="EXPIRED">EXPIRED</mat-option>
+                        <mat-option value="DISABLED">DISABLED</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Start date</mat-label>
+                    <input matInput [matDatepicker]="startPicker" [(ngModel)]="fStart" name="fStart">
+                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Start time</mat-label>
+                    <input matInput type="time" [(ngModel)]="fStartTime" name="fStartTime" placeholder="HH:mm">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>End date</mat-label>
+                    <input matInput [matDatepicker]="endPicker" [(ngModel)]="fEnd" name="fEnd">
+                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>End time</mat-label>
+                    <input matInput type="time" [(ngModel)]="fEndTime" name="fEndTime" placeholder="HH:mm">
+                </mat-form-field>
+            </div>
+
+            <div class="section-actions">
+                <button mat-stroked-button color="primary" type="button" (click)="applyFilters()">Search</button>
+                <button mat-stroked-button type="button" (click)="clearFilters()">Clear</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<!-- Table + pagination -->
+<mat-card style="margin-bottom:16px;">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <mat-card-content>
+        <div *ngIf="error" style="margin-bottom:8px;">
+            <mat-card>
+                <mat-card-content style="color:#b00020;">{{ error }}</mat-card-content>
+            </mat-card>
+        </div>
+
+        <div style="overflow:auto;">
+            <table mat-table [dataSource]="promos" class="mat-elevation-z2" style="width:100%;"
+                   matSort
+                   [matSortActive]="sortActive"
+                   [matSortDirection]="sortDirection"
+                   (matSortChange)="onSort($event)">
+
+                <!-- Code -->
+                <ng-container matColumnDef="code">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="code"> Code </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.code }} </td>
+                </ng-container>
+
+                <!-- % -->
+                <ng-container matColumnDef="discountPercentage">
+                    <th mat-header-cell *matHeaderCellDef> Discount % </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.discountPercentage ?? '-' }} </td>
+                </ng-container>
+
+                <!-- Value -->
+                <ng-container matColumnDef="discountValue">
+                    <th mat-header-cell *matHeaderCellDef> Discount Value </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.discountValue ?? '-' }} </td>
+                </ng-container>
+
+                <!-- Expiry -->
+                <ng-container matColumnDef="expiryDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="expiryDate"> Expiration Date </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.expiryDate | date:'medium' }} </td>
+                </ng-container>
+
+                <!-- Usage Limit -->
+                <ng-container matColumnDef="usageLimit">
+                    <th mat-header-cell *matHeaderCellDef> Usage Limit </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.usageLimit ?? '-' }} </td>
+                </ng-container>
+
+                <!-- Usages -->
+                <ng-container matColumnDef="usages">
+                    <th mat-header-cell *matHeaderCellDef> Usages </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.usages ?? '-' }} </td>
+                </ng-container>
+
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let p">
+                        <mat-chip-set aria-label="Promo status">
+                            <mat-chip class="status-chip" [ngStyle]="getStatusChipStyle(p.status)">
+                                {{ p.status }}
+                            </mat-chip>
+                        </mat-chip-set>
+                    </td>
+                </ng-container>
+
+                <!-- Actions -->
+                <ng-container *ngIf="auth.isAdmin()" matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef style="width:160px;"> Actions </th>
+                    <td mat-cell *matCellDef="let p">
+                        <button mat-stroked-button color="primary" style="margin-right:8px;"
+                                (click)="startEdit(p)">Edit</button>
+                        <button mat-stroked-button color="warn"
+                                (click)="delete(p)">Delete</button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="auth.isAdmin()
+                  ? ['code','discountPercentage','discountValue','expiryDate','usageLimit','usages','status','actions']
+                  : ['code','discountPercentage','discountValue','expiryDate','usageLimit','usages','status']">
+                </tr>
+
+                <tr mat-row *matRowDef="let row; columns: auth.isAdmin()
+                  ? ['code','discountPercentage','discountValue','expiryDate','usageLimit','usages','status','actions']
+                  : ['code','discountPercentage','discountValue','expiryDate','usageLimit','usages','status']">
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="!loading && promos.length === 0" style="text-align:center; padding:12px; color:#666;">
+            No promos found
+        </div>
+
+        <mat-paginator
+                [length]="totalElements"
+                [pageSize]="pageSize"
+                [pageIndex]="pageNumber"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="onPage($event)">
+        </mat-paginator>
+    </mat-card-content>
+</mat-card>
+
+<!-- Create / Edit Form -->
+<mat-card *ngIf="auth.isAdmin()">
+    <mat-card-content>
+        <h1 style="margin-top:0; margin-bottom:12px;">{{ isEditing ? 'Edit Promo' : 'Create Promo' }}</h1>
+
+        <form (ngSubmit)="submit()" [formGroup]="form" novalidate>
+            <div class="promo-grid">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Code *</mat-label>
+                    <input matInput formControlName="code" placeholder="WELCOME10">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Discount %</mat-label>
+                    <input matInput type="number" formControlName="discountPercentage" placeholder="e.g. 20"
+                           [disabled]="form.get('discountValue')?.value !== null && form.get('discountValue')?.value !== ''">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Discount Value</mat-label>
+                    <input matInput type="number" formControlName="discountValue" placeholder="e.g. 15"
+                           [disabled]="form.get('discountPercentage')?.value !== null && form.get('discountPercentage')?.value !== ''">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Expiration Date</mat-label>
+                    <input matInput [matDatepicker]="expPicker" formControlName="expiryDate">
+                    <mat-datepicker-toggle matSuffix [for]="expPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #expPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Expiration time</mat-label>
+                    <input matInput type="time" formControlName="expiryTime" placeholder="HH:mm">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Usage Limit</mat-label>
+                    <input matInput type="number" formControlName="usageLimit" placeholder="e.g. 100">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                        <mat-option value="ACTIVE">ACTIVE</mat-option>
+                        <mat-option *ngIf="isEditing" value="EXPIRED">EXPIRED</mat-option>
+                        <mat-option value="DISABLED">DISABLED</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="section-actions" style="margin-top:12px;">
+                <button mat-raised-button color="primary" type="submit">
+                    {{ isEditing ? 'Update' : 'Create' }}
+                </button>
+                <button mat-stroked-button type="button" (click)="startCreate()">Reset</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

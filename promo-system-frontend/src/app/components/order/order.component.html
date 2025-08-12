@@ -1,0 +1,29 @@
+<mat-card class="order-card">
+    <mat-card-header>
+        <mat-card-title>Apply Promo Code</mat-card-title>
+        <mat-card-subtitle>Enter a promo code (optional) and press Apply</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form (ngSubmit)="apply()" [formGroup]="form" novalidate>
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Promo code (optional)</mat-label>
+                <input matInput formControlName="code" placeholder="e.g. WELCOME10" autocomplete="off">
+            </mat-form-field>
+
+            <div class="actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="applying">
+                    {{ applying ? 'Applying…' : 'Apply' }}
+                </button>
+
+                <button mat-stroked-button color="accent" type="button" (click)="completeOrder()">
+                    Complete order
+                </button>
+            </div>
+
+            <div *ngIf="lastResult" class="result" [ngClass]="lastResult.valid ? 'msg-valid' : 'msg-invalid'">
+                {{ lastResult.message }}
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

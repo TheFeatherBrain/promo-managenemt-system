@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" style="display:flex; align-items:center;">
+    <a mat-button routerLink="/" style="color:white; text-decoration:none; font-weight:500;">
+        Promo Manager
+    </a>
+
+    <span style="flex: 1 1 auto;"></span>
+
+    <span *ngIf="kc.isLoggedIn()" style="margin-right:12px;">{{ kc.getUsername() }}</span>
+    <button *ngIf="kc.isLoggedIn()" mat-stroked-button (click)="logout()">Logout</button>
+</mat-toolbar>
+
+<div style="width:100%; padding:16px; box-sizing:border-box;">
+    <router-outlet></router-outlet>
+</div>
